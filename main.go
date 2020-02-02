@@ -26,7 +26,7 @@ func main() {
 	// Routes
 	router.Init(g)
 	s := &http.Server{
-		Addr:           ":9090",
+		Addr:           ":9999",
 		Handler:        g,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
