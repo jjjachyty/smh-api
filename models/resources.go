@@ -3,19 +3,25 @@ package models
 import (
 	"context"
 	"smh-api/db"
+	"time"
+
+	"github.com/rs/xid"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Resources struct {
-	ID      primitive.ObjectID `bson:"_id"`
-	Name    string
-	MovieID string
-	URL     string
-	State   bool
+	ID       string `bson:"_id"`
+	Name     string
+	MovieID  string
+	URL      string
+	CreateBy string
+	ReportBy string
+	CreateAt time.Time
+	UpdateAt time.Time
+	State    bool
 }
 
 func resources() *mongo.Collection {
@@ -23,7 +29,7 @@ func resources() *mongo.Collection {
 }
 
 func (m *Resources) Insert() error {
-	m.ID = primitive.NewObjectID()
+	m.ID = xid.New().String()
 	if _, err := resources().InsertOne(context.TODO(), m); err != nil {
 		return err
 	}

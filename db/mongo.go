@@ -13,7 +13,7 @@ var client *mongo.Client
 
 func InitDB() {
 	var err error
-	var mongoURI = "mongodb://smh:smh~2019@127.0.0.1:27117"
+	var mongoURI = "mongodb://smh:smh~2019@122.112.151.97:27117"
 	// ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	// client, err := mongo.Connect(ctx, options.Client().ApplyURI(
 	//    "mongodb+srv://<username>:<password>@<cluster-address>/test?w=majority"

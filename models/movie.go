@@ -2,6 +2,8 @@ package models
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"smh-api/db"
 	"time"
 
@@ -21,6 +23,7 @@ type Movie struct {
 	Director string    `bson:"director"`
 	Actor    string    `bson:"actor"`
 	CreateAt time.Time `bson:"createAt"`
+	CreateBy string    `bson:"CreateBy"`
 	UpdateAt time.Time `bson:"updateAt"`
 }
 
@@ -29,10 +32,18 @@ func c() *mongo.Collection {
 }
 
 func (m *Movie) Insert() error {
-	if _, err := c().InsertOne(context.TODO(), m); err != nil {
-		return err
+	var err error
+	var count int64
+	if count, err = c().CountDocuments(context.TODO(), bson.M{"name": m.Name, "actor": m.Actor}); err == nil && count == 0 {
+		if _, err = c().InsertOne(context.TODO(), m); err != nil {
+			return err
+		}
 	}
-	return nil
+	if count > 0 {
+		err = errors.New("已存在,重复添加")
+	}
+	fmt.Println(count)
+	return err
 }
 
 func (m *Movie) Get(where bson.M) (err error) {

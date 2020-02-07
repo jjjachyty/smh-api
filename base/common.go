@@ -38,7 +38,7 @@ func Response(c *gin.Context, err error, data interface{}) {
 
 //GetUUID 生成UUID 36位 中间带_
 func GetUUID() string {
-	uuid, _ := uuid.NewV4()
+	uuid := uuid.NewV4()
 	return uuid.String()
 }
 

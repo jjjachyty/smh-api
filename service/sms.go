@@ -33,7 +33,7 @@ type SMSService struct{}
 
 func (SMSService) Send(phone string) error {
 	var err error
-	sms := &models.SMS{Phone: phone}
+	sms := &models.SMS{ID: phone}
 	if err = sms.Get(); err == nil {
 
 		if sms.Code == "" {
@@ -60,7 +60,7 @@ func (SMSService) Send(phone string) error {
 
 func (SMSService) VerificationSMS(phone, code string) error {
 	var err error
-	sms := &models.SMS{Phone: phone}
+	sms := &models.SMS{ID: phone}
 	if err = sms.Get(); err == nil {
 		if sms.Code == code {
 			err = sms.Delete()

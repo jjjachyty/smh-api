@@ -68,7 +68,7 @@ var (
 
 // 载荷，可以加一些自己需要的信息
 type CustomClaims struct {
-	ID       string
+	UserID   string
 	Phone    string
 	NickName string
 	jwt.StandardClaims

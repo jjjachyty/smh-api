@@ -10,6 +10,7 @@ import (
 )
 
 type SMS struct {
+	ID       string
 	Phone    string
 	Code     string
 	CreateAt time.Time

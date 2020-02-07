@@ -3,20 +3,66 @@ package controlers
 import (
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"smh-api/base"
+	"smh-api/middlewares/jwt"
 	"smh-api/models"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/xid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 func Newest(c *gin.Context) {
 	var err error
 	var result []*models.Movie
+	fmt.Println("Header", c.Request.Header)
 	result, err = models.FindMovie(bson.M{}, 0, 5, bson.M{"createAt": -1})
+	base.Response(c, err, result)
+}
+func Add(c *gin.Context) {
+	var err error
+	var result = &models.Movie{}
+	var has bool
+	if err = c.BindJSON(result); err == nil {
+		if _, has = c.Get("claims"); has {
+			cla := jwt.GetClaims(c)
+			result.CreateBy = cla.UserID
+		}
+
+		result.ID = xid.New().String()
+		result.CreateAt = time.Now()
+		result.UpdateAt = result.CreateAt
+		if err = result.Insert(); err != nil {
+			base.Response(c, err, result)
+			return
+		}
+	}
+	base.Response(c, err, result)
+}
+
+func AddResources(c *gin.Context) {
+	var err error
+	var result = &models.Resources{}
+	var has bool
+
+	if err = c.BindJSON(result); err == nil {
+
+		if _, has = c.Get("claims"); has {
+			cla := jwt.GetClaims(c)
+			result.CreateBy = cla.UserID
+		}
+		result.ID = xid.New().String()
+		result.CreateAt = time.Now()
+		result.UpdateAt = time.Now()
+		if err = result.Insert(); err != nil {
+			base.Response(c, err, result)
+			return
+		}
+	}
 	base.Response(c, err, result)
 }
 
@@ -26,7 +72,7 @@ func All(c *gin.Context) {
 
 	var err error
 	var result []*models.Movie
-	result, err = models.FindMovie(bson.M{}, offset*10, 10, bson.M{"createAt": -1})
+	result, err = models.FindMovie(bson.M{}, offset*12, 12, bson.M{"createAt": -1})
 	base.Response(c, err, result)
 
 }
