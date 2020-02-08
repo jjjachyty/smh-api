@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/mojocn/base64Captcha"
+	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,17 +34,19 @@ var captcha = base64Captcha.NewCaptcha(&base64Captcha.DriverDigit{
 }, base64Captcha.NewMemoryStore(1024, time.Minute*1))
 
 func (CaptchaController) GetCaption(c *gin.Context) {
-	// phone, hasPhone := c.GetQuery("phone")
-	// device, hasDevice := c.GetQuery("device")
-	// ip := c.Request.RemoteAddr
-	// var base64blob, captchaId string
-	// var captcaInterfaceInstance base64Captcha.CaptchaInterface
-	// if hasPhone {
-	// captchaId, captcaInterfaceInstance = base64Captcha.GenerateCaptcha(phone, configD)
-	// base64blob = base64Captcha.CaptchaWriteToBase64Encoding(captcaInterfaceInstance)
 
+	phone, hasPhone := c.GetQuery("Phone")
+	if !hasPhone {
+		base.Response(c, errors.New("手机号不能为空"), nil)
+		return
+	}
+	//检车用户是否存在
+	user := models.User{Phone: phone}
+	if err := user.Get(bson.M{"phone": user.Phone}); err == nil && user.ID == "" {
+		base.Response(c, errors.New("不存在该用户,请先注册"), nil)
+		return
+	}
 	id, b64s, err := captcha.Generate()
-
 	base.Response(c, err, map[string]interface{}{"img": b64s, "id": id})
 	return
 	// }

@@ -6,6 +6,7 @@ import (
 	"smh-api/base"
 	"smh-api/middlewares/jwt"
 	"smh-api/models"
+	"smh-api/service"
 	"time"
 
 	"github.com/rs/xid"
@@ -64,6 +65,35 @@ func UserLoginWithPW(c *gin.Context) {
 
 	}
 	fmt.Println(err, user)
+	base.Response(c, err, map[string]interface{}{"User": user, "Token": token})
+}
+
+//LoginWithSMS 短信验证码登录
+func UserLoginWithSMS(c *gin.Context) {
+	var err error
+	var user = new(models.User)
+
+	if err = c.BindJSON(user); err != nil {
+		base.Response(c, err, nil)
+		return
+	}
+
+	if err = (service.SMSService{}).VerificationSMS(user.Phone, user.PassWord); err != nil {
+		base.Response(c, err, nil)
+		return
+	}
+	var token string
+
+	if err = user.Get(bson.M{"phone": user.Phone}); err != nil {
+		base.Response(c, err, nil)
+		return
+	}
+
+	if token, err = jwt.GenerateToken(*user); err != nil {
+		base.Response(c, err, nil)
+	}
+
+	fmt.Println(user)
 	base.Response(c, err, map[string]interface{}{"User": user, "Token": token})
 }
 

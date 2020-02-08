@@ -28,7 +28,7 @@ func (m *SMS) Insert() error {
 	return nil
 }
 func (m *SMS) Update() error {
-	if _, err := sms().UpdateOne(context.TODO(), bson.M{"phone": m.Phone}, bson.M{"$set": bson.M{"code": m.Code, "createAt": time.Now()}}); err != nil {
+	if _, err := sms().UpdateOne(context.TODO(), bson.M{"phone": m.Phone}, bson.M{"$set": bson.M{"code": m.Code, "createat": time.Now()}}); err != nil {
 		return err
 	}
 	return nil

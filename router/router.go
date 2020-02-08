@@ -13,6 +13,7 @@ func Init(e *gin.Engine) {
 		base := v1.Group("/base")
 		{
 			base.GET("/captcha", controlers.CaptchaController{}.GetCaption)
+			base.GET("/version", controlers.VersionController{}.Get)
 			base.POST("/captcha", controlers.CaptchaController{}.VerificationCaption)
 			base.POST("/sms", controlers.SMSController{}.VerificationSMS)
 
@@ -46,6 +47,8 @@ func Init(e *gin.Engine) {
 			user.GET("/checkphone", controlers.UserCheckPhone)
 			user.POST("/register", controlers.UserRegister)
 			user.POST("/login", controlers.UserLoginWithPW)
+			user.POST("/loginsms", controlers.UserLoginWithSMS)
+
 			user.Use(jwt.JWTAuth())
 			user.POST("/updateinfo", controlers.UserUpdateInfo)
 

@@ -33,9 +33,8 @@ type SMSService struct{}
 
 func (SMSService) Send(phone string) error {
 	var err error
-	sms := &models.SMS{ID: phone}
+	sms := &models.SMS{Phone: phone}
 	if err = sms.Get(); err == nil {
-
 		if sms.Code == "" {
 			sms.Code = base.CreateRandomNumber(4)
 
@@ -44,7 +43,7 @@ func (SMSService) Send(phone string) error {
 			}
 		}
 
-		if sms.CreateAt.Sub(time.Now()) > 60*time.Second {
+		if time.Now().Sub(sms.CreateAt) > 60*time.Second {
 			sms.Code = base.CreateRandomNumber(4)
 
 			if err = sms.Update(); err == nil {
