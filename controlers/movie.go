@@ -82,7 +82,19 @@ func GetMovie(c *gin.Context) {
 	var err error
 	movie := models.Movie{}
 	if has {
-		movie.Get(bson.M{"_id": id})
+		err = movie.Get(bson.M{"_id": id})
+	}
+
+	base.Response(c, err, movie)
+}
+
+func MovieDelete(c *gin.Context) {
+	id := c.Param("id")
+	var err error
+	movie := models.Movie{}
+	if id != "" {
+		cla := jwt.GetClaims(c)
+		err = movie.Remove(bson.M{"_id": id, "createBy": cla.UserID})
 	}
 
 	base.Response(c, err, movie)
@@ -104,6 +116,22 @@ func Serach(c *gin.Context) {
 		where := bson.M{"$or": []bson.M{bson.M{"name": bson.M{"$regex": key, "$options": "$i"}}, bson.M{"actor": bson.M{"$regex": key, "$options": "$i"}}}}
 		result, err = models.FindMovie(where, 0, 10, bson.M{"createAt": -1})
 	}
+	base.Response(c, err, result)
+}
+
+func MyCreateMovies(c *gin.Context) {
+	var err error
+	var result []*models.Movie
+	offsetQuery, hasOffset := c.GetQuery("offset")
+
+	if hasOffset {
+		cla := jwt.GetClaims(c)
+		offset, _ := strconv.ParseInt(offsetQuery, 10, 64)
+		where := bson.M{"createBy": cla.UserID}
+		result, err = models.FindMovie(where, offset, 10, bson.M{"createAt": -1})
+
+	}
+
 	base.Response(c, err, result)
 
 }

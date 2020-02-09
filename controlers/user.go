@@ -105,3 +105,13 @@ func UserUpdateInfo(c *gin.Context) {
 	}
 	base.Response(c, err, nil)
 }
+
+func UserInfoByID(c *gin.Context) {
+	var err error
+	var userID = c.Param("id")
+	var user = &models.User{}
+	if userID != "" {
+		err = user.Get(bson.M{"_id": userID})
+	}
+	base.Response(c, err, models.User{ID: userID, NickName: user.NickName, Avatar: user.Avatar})
+}

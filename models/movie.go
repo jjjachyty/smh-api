@@ -23,7 +23,7 @@ type Movie struct {
 	Director string    `bson:"director"`
 	Actor    string    `bson:"actor"`
 	CreateAt time.Time `bson:"createAt"`
-	CreateBy string    `bson:"CreateBy"`
+	CreateBy string    `bson:"createBy"`
 	UpdateAt time.Time `bson:"updateAt"`
 }
 
@@ -56,6 +56,11 @@ func (m *Movie) Get(where bson.M) (err error) {
 	}
 	err = result.Decode(m)
 
+	return err
+}
+
+func (m *Movie) Remove(where bson.M) (err error) {
+	_, err = c().DeleteMany(context.TODO(), where)
 	return err
 }
 
