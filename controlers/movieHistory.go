@@ -37,7 +37,7 @@ func UpdateWatchingHistory(c *gin.Context) {
 	err = history.Update()
 	if err == nil {
 		watching := models.WatchingHistory{MovieID: history.MovieID, MovieThumbnail: history.MovieThumbnail, UserID: history.UserID}
-		watching.Insert()
+		err = watching.Update()
 	}
 	base.Response(c, err, nil)
 
