@@ -20,7 +20,9 @@ type Watching struct {
 type WatchingHistory struct {
 	UserID         string
 	MovieID        string
+	MovieName      string
 	ResourcesID    string
+	ResourcesName  string
 	MovieThumbnail string
 	MovieDuration  float64
 	Progress       float64

@@ -13,18 +13,19 @@ import (
 )
 
 type Movie struct {
-	ID       string    `bson:"_id" binding:"-" ` //binding:"-"
-	Name     string    `bson:"name"`
-	Cover    string    `bson:"cover"`
-	Years    string    `bson:"years"`
-	Region   string    `bson:"region"`
-	Genre    string    `bson:"genre"`
-	ScoreDB  int       `bson:"scoreDB"`
-	Director string    `bson:"director"`
-	Actor    string    `bson:"actor"`
-	CreateAt time.Time `bson:"createAt"`
-	CreateBy string    `bson:"createBy"`
-	UpdateAt time.Time `bson:"updateAt"`
+	ID        string    `bson:"_id" binding:"-" ` //binding:"-"
+	Name      string    `bson:"name"`
+	Cover     string    `bson:"cover"`
+	Years     string    `bson:"years"`
+	Region    string    `bson:"region"`
+	Genre     string    `bson:"genre"`
+	ScoreDB   int       `bson:"scoreDB"`
+	Director  string    `bson:"director"`
+	Actor     string    `bson:"actor"`
+	DetailURL string    `bson:"detailURL"`
+	CreateAt  time.Time `bson:"createAt"`
+	CreateBy  string    `bson:"createBy"`
+	UpdateAt  time.Time `bson:"updateAt"`
 }
 
 func c() *mongo.Collection {

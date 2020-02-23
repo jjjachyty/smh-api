@@ -62,7 +62,7 @@ func WatchingHistorys(c *gin.Context) {
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 64)
 	userid, _ := c.GetQuery("userid")
 
-	historys, err = models.FindWatchHistorys(bson.M{"userid": userid}, offset, 15, bson.M{"createAt": -1})
+	historys, err = models.FindWatchHistorys(bson.M{"userid": userid}, offset, 15, bson.M{"createat": -1})
 	base.Response(c, err, historys)
 }
 
