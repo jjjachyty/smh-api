@@ -19,7 +19,7 @@ func JWTAuth() gin.HandlerFunc {
 		token := c.Request.Header.Get("authorization")
 		if token == "" {
 			c.JSON(http.StatusOK, gin.H{
-				"Status":  false,
+				"State":   false,
 				"Message": "请求未携带token，无权限访问",
 			})
 			c.Abort()
@@ -34,14 +34,14 @@ func JWTAuth() gin.HandlerFunc {
 		if err != nil {
 			if err == TokenExpired {
 				c.JSON(http.StatusUnauthorized, gin.H{
-					"Status":  false,
+					"State":   false,
 					"Message": "授权已过期",
 				})
 				c.Abort()
 				return
 			}
 			c.JSON(http.StatusOK, gin.H{
-				"Status":  false,
+				"State":   false,
 				"Message": err.Error(),
 			})
 			c.Abort()
@@ -167,7 +167,7 @@ func GetDataByTime(c *gin.Context) {
 	claims := c.MustGet("claims").(*CustomClaims)
 	if claims != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"Status":  true,
+			"State":   true,
 			"Message": "token有效",
 			"Data":    claims,
 		})
