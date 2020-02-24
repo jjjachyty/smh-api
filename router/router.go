@@ -16,6 +16,7 @@ func Init(e *gin.Engine) {
 			base.GET("/version", controlers.VersionController{}.Get)
 			base.POST("/captcha", controlers.CaptchaController{}.VerificationCaption)
 			base.POST("/sms", controlers.SMSController{}.VerificationSMS)
+			base.POST("/refreshtoken", jwt.RefreshToken)
 
 		}
 

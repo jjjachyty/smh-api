@@ -42,6 +42,11 @@ func (m *WatchingHistory) Insert() error {
 	return nil
 }
 
+func (m *WatchingHistory) Remove(where bson.M) (err error) {
+	_, err = watchingHistoryCollection().DeleteMany(context.TODO(), where)
+	return err
+}
+
 func (m *WatchingHistory) Update() error {
 	if _, err := watchingHistoryCollection().UpdateOne(context.TODO(), bson.M{"userid": m.UserID, "movieid": m.MovieID, "resourcesid": m.ResourcesID}, bson.M{"$set": bson.M{"movieduration": m.MovieDuration, "progress": m.Progress, "updateat": time.Now()}}); err != nil {
 		return err

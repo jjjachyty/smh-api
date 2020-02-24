@@ -36,6 +36,11 @@ func (m *Resources) Insert() error {
 	return nil
 }
 
+func (m *Resources) Remove(where bson.M) (err error) {
+	_, err = resources().DeleteMany(context.TODO(), where)
+	return err
+}
+
 func FindMovieResources(where bson.M, offset int64, limit int64, sort bson.M) ([]*Resources, error) {
 	var results []*Resources
 	var err error

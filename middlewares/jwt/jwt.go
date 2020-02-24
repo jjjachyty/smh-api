@@ -174,13 +174,11 @@ func GetDataByTime(c *gin.Context) {
 	}
 }
 
-// GetDataByTime
+//RefreshToken 刷新token
 func RefreshToken(c *gin.Context) {
 	var err = errors.New("authorization 不能为空")
 	token := c.Request.Header.Get("authorization")
-	fmt.Println("\n")
 	fmt.Println(NewJWT().ParseToken(token))
-	fmt.Println("\n")
 	if token != "" {
 		token, err = NewJWT().RefreshToken(token)
 		fmt.Println("newtoken=", token, err)
