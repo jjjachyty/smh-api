@@ -2,7 +2,6 @@ package controlers
 
 import (
 	"errors"
-	"fmt"
 	"smh-api/base"
 	"smh-api/models"
 	"smh-api/service"
@@ -20,7 +19,6 @@ func (SMSController) VerificationSMS(c *gin.Context) {
 		base.Response(c, errors.New("参数错误"), err.Error())
 		return
 	}
-	fmt.Println(sms)
 	err = service.SMSService{}.VerificationSMS(sms.Phone, sms.Code)
 	base.Response(c, err, nil)
 }

@@ -2,14 +2,12 @@ package controlers
 
 import (
 	"errors"
-	"fmt"
 	"smh-api/base"
 	"smh-api/models"
 	"smh-api/service"
 	"time"
 
 	"github.com/mojocn/base64Captcha"
-	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,22 +33,22 @@ var captcha = base64Captcha.NewCaptcha(&base64Captcha.DriverDigit{
 
 func (CaptchaController) GetCaption(c *gin.Context) {
 
-	phone, hasPhone := c.GetQuery("Phone")
-	if !hasPhone {
-		base.Response(c, errors.New("手机号不能为空"), nil)
-		return
-	}
+	// _, hasPhone := c.GetQuery("Phone")
+	// if !hasPhone {
+	// 	base.Response(c, errors.New("手机号不能为空"), nil)
+	// 	return
+	// }
 	//检车用户是否存在
-	user := models.User{Phone: phone}
-	if err := user.Get(bson.M{"phone": user.Phone}); err == nil && user.ID == "" {
-		base.Response(c, errors.New("不存在该用户,请先注册"), nil)
-		return
-	}
+	// user := models.User{Phone: phone}
+	// if err := user.Get(bson.M{"phone": user.Phone}); err == nil && user.ID == "" {
+	// 	base.Response(c, errors.New("不存在该用户,请先注册"), nil)
+	// 	return
+	// }
 	id, b64s, err := captcha.Generate()
 	base.Response(c, err, map[string]interface{}{"img": b64s, "id": id})
-	return
+	// return
 	// }
-	base.Response(c, errors.New("手机号不能为空"), nil)
+	// base.Response(c, errors.New("手机号不能为空"), nil)
 
 }
 
@@ -62,7 +60,11 @@ func (CaptchaController) VerificationCaption(c *gin.Context) {
 		base.Response(c, errors.New("参数错误"), nil)
 		return
 	}
-	fmt.Println(sms)
+
+	if sms.Phone == "" {
+		base.Response(c, errors.New("手机号不能为空"), nil)
+	}
+
 	verifyResult := captcha.Verify(sms.ID, sms.Code, true)
 	if verifyResult {
 		err = service.SMSService{}.Send(sms.Phone)

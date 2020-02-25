@@ -20,7 +20,6 @@ func UserRegister(c *gin.Context) {
 	user := new(models.User)
 
 	if err = c.ShouldBindJSON(&user); err != nil {
-		fmt.Println(err.Error())
 		base.Response(c, errors.New("参数错误"), err.Error())
 		return
 	}
@@ -56,7 +55,6 @@ func UserLoginWithPW(c *gin.Context) {
 	var user = new(models.User)
 	if err = c.BindJSON(user); err == nil {
 		err = user.Get(bson.M{"phone": user.Phone, "password": base.GetMD5(user.PassWord)})
-		fmt.Println(err, "ID", user.ID)
 		if user.ID != "" {
 			token, err = jwt.GenerateToken(*user)
 		} else {
@@ -64,7 +62,6 @@ func UserLoginWithPW(c *gin.Context) {
 		}
 
 	}
-	fmt.Println(err, user)
 	base.Response(c, err, map[string]interface{}{"User": user, "Token": token})
 }
 
