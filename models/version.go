@@ -11,22 +11,21 @@ import (
 )
 
 type Version struct {
-	VersionCode        string
-	ReleaseTime        time.Time
-	ReleaseNote        string
-	AndroidDownloadURL string
-	IosDownloadURL     string
+	VersionCode string
+	ReleaseTime time.Time
+	ReleaseNote string
+	DownloadURL string
 }
 
 func versionCollection() *mongo.Collection {
 	return db.GetCollection("version")
 }
 
-func GetVsersion() (*Version, error) {
+func GetVsersion(platform string) (*Version, error) {
 	var err error
 	var result *mongo.SingleResult
 	var version = new(Version)
-	if result = versionCollection().FindOne(context.TODO(), bson.M{}, options.FindOne().SetSort(bson.M{"versioncode": -1})); result.Err() != nil {
+	if result = versionCollection().FindOne(context.TODO(), bson.M{"platform": platform}, options.FindOne().SetSort(bson.M{"versioncode": -1})); result.Err() != nil {
 		if result.Err().Error() == "mongo: no documents in result" {
 			return nil, nil
 		}
