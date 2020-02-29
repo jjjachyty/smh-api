@@ -53,8 +53,8 @@ func Init(e *gin.Engine) {
 			user.POST("/register", controlers.UserRegister)
 			user.POST("/login", controlers.UserLoginWithPW)
 			user.POST("/loginsms", controlers.UserLoginWithSMS)
-
 			user.Use(jwt.JWTAuth())
+			user.POST("/vip", controlers.UserVIP)
 			user.POST("/updateinfo", controlers.UserUpdateInfo)
 
 		}

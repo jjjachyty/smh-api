@@ -66,6 +66,18 @@ func UserLoginWithPW(c *gin.Context) {
 	base.Response(c, err, map[string]interface{}{"User": user, "Token": token})
 }
 
+//UserVIP 续VIP
+func UserVIP(c *gin.Context) {
+	var err error
+	var user = new(models.User)
+	if err = c.BindJSON(user); err == nil {
+		cla := jwt.GetClaims(c)
+		user.ID = cla.UserID
+		err = user.Update(bson.M{"vipendtime": time.Now().Add(time.Hour * 24)})
+	}
+	base.Response(c, err, "")
+}
+
 //LoginWithSMS 短信验证码登录
 func UserLoginWithSMS(c *gin.Context) {
 	var err error
