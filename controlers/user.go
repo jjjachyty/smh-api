@@ -72,8 +72,7 @@ func UserVIP(c *gin.Context) {
 	var user = new(models.User)
 	cla := jwt.GetClaims(c)
 	user.ID = cla.UserID
-	err = user.Update(bson.M{"vipendtime": time.Now().Add(time.Hour * 24)})
-
+	err = user.Update(bson.M{"$set": bson.M{"vipendtime": time.Now().Add(time.Hour * 24)}})
 	base.Response(c, err, "")
 }
 
