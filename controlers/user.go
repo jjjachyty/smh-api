@@ -29,6 +29,7 @@ func UserRegister(c *gin.Context) {
 	user.IP = c.ClientIP()
 	user.NickName = user.Phone[8:]
 	user.PassWord = base.GetMD5(user.PassWord)
+	user.VIPEndTime = time.Now().Add(time.Hour * 24)
 	err = user.Insert()
 	base.Response(c, err, nil)
 

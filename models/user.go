@@ -16,7 +16,7 @@ type User struct {
 	NickName       string
 	Avatar         string
 	Introduce      string
-	Role           int
+	VIPEndTime     time.Time
 	Sex            int
 	Phone          string
 	PassWord       string
