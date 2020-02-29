@@ -72,8 +72,9 @@ func UserVIP(c *gin.Context) {
 	var user = new(models.User)
 	cla := jwt.GetClaims(c)
 	user.ID = cla.UserID
-	err = user.Update(bson.M{"$set": bson.M{"vipendtime": time.Now().Add(time.Hour * 24)}})
-	base.Response(c, err, "")
+	var expTime = time.Now().Add(time.Hour * 24)
+	err = user.Update(bson.M{"$set": bson.M{"vipendtime": expTime}})
+	base.Response(c, err, expTime)
 }
 
 //LoginWithSMS 短信验证码登录
