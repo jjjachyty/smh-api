@@ -70,11 +70,10 @@ func UserLoginWithPW(c *gin.Context) {
 func UserVIP(c *gin.Context) {
 	var err error
 	var user = new(models.User)
-	if err = c.BindJSON(user); err == nil {
-		cla := jwt.GetClaims(c)
-		user.ID = cla.UserID
-		err = user.Update(bson.M{"vipendtime": time.Now().Add(time.Hour * 24)})
-	}
+	cla := jwt.GetClaims(c)
+	user.ID = cla.UserID
+	err = user.Update(bson.M{"vipendtime": time.Now().Add(time.Hour * 24)})
+
 	base.Response(c, err, "")
 }
 
