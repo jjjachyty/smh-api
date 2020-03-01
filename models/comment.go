@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"fmt"
 	"smh-api/db"
 	"time"
 
@@ -51,7 +50,6 @@ func (m *Comment) Get(where bson.M) (err error) {
 }
 
 func (m Comment) Update(set interface{}) error {
-	fmt.Println("ID", m.ID)
 	if _, err := comment().UpdateMany(context.TODO(), bson.M{"_id": m.ID}, set); err != nil {
 		return err
 	}

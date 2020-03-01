@@ -67,6 +67,15 @@ func Init(e *gin.Engine) {
 			comment.POST("/likecancel", controlers.CommentAddLikeCancel)
 			comment.POST("/unlike", controlers.CommentAddUnLike)
 			comment.POST("/unlikecancel", controlers.CommentAddUnLikeCancel)
+		}
+
+		article := v1.Group("/article")
+		{
+			article.GET("/list", controlers.Articles)
+			article.Use(jwt.JWTAuth())
+			article.POST("/add", controlers.ArticleAdd)
+			article.GET("/my", controlers.MyArticles)
+			article.POST("/remove", controlers.ArticleRemove)
 
 		}
 
