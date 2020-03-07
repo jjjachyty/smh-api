@@ -20,6 +20,8 @@ func Init(e *gin.Engine) {
 
 		}
 
+		v1.GET("/player", controlers.PlayerController{}.Get)
+
 		movie := v1.Group("/movie")
 		{
 			movie.GET("/newest", controlers.Newest)
