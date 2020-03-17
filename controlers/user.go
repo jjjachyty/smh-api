@@ -110,7 +110,7 @@ func UserUpdateInfo(c *gin.Context) {
 	var err error
 	var user = new(models.User)
 	if err = c.BindJSON(user); err == nil {
-		err = user.Update(bson.M{"$set": bson.M{"nickname": user.NickName, "introduce": user.Introduce}})
+		err = user.Update(bson.M{"$set": bson.M{"nickname": user.NickName, "introduce": user.Introduce, "sex": user.Sex, "avatar": user.Avatar}})
 	}
 	base.Response(c, err, nil)
 }

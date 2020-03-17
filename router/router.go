@@ -41,7 +41,6 @@ func Init(e *gin.Engine) {
 			movie.POST("/addwatch", controlers.AddWatchingHistory)
 			movie.POST("/updatewatch", controlers.UpdateWatchingHistory)
 			movie.POST("/watch", controlers.WatchingHistory)
-			movie.GET("/mycreate", controlers.MyCreateMovies)
 			movie.DELETE("/id/:id", controlers.MovieDelete)
 
 			// v1.Use(jwt.JWTAuth())
@@ -58,6 +57,13 @@ func Init(e *gin.Engine) {
 			user.Use(jwt.JWTAuth())
 			user.POST("/vip", controlers.UserVIP)
 			user.POST("/updateinfo", controlers.UserUpdateInfo)
+			user.GET("/moviecreate", controlers.MyCreateMovies)
+			user.GET("/moviecomments", controlers.UserComments)
+			user.GET("/follows", controlers.UserFollows)
+			user.GET("/followcheck", controlers.FollowCheck)
+
+			user.POST("/followadd", controlers.FollowAdd)
+			user.POST("/followremove", controlers.FollowRemove)
 
 		}
 		comment := v1.Group("/comment")
