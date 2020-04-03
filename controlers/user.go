@@ -97,6 +97,19 @@ func UserLoginWithSMS(c *gin.Context) {
 		base.Response(c, err, nil)
 		return
 	}
+	if user.ID == "" { //新用户自动注册
+		user.ID = xid.New().String()
+		user.CreateAt = time.Now()
+		user.State = true
+		user.IP = c.ClientIP()
+		user.NickName = user.Phone[8:]
+		user.PassWord = base.GetMD5("123456")
+		user.VIPEndTime = time.Now().Add(time.Hour * 24)
+		if err = user.Insert(); err != nil {
+			base.Response(c, err, nil)
+			return
+		}
+	}
 
 	if token, err = jwt.GenerateToken(*user); err != nil {
 		base.Response(c, err, nil)
