@@ -81,3 +81,16 @@ func FindMovie(where bson.M, offset int64, limit int64, sort bson.M) ([]*Movie, 
 	}
 	return results, err
 }
+
+func FindMovieGenre() ([]interface{}, error) {
+	var err error
+	var genres []interface{}
+	if genres, err = c().Distinct(context.TODO(), "genre", bson.M{}); err != nil {
+		return nil, err
+	}
+	for _, genre := range genres {
+		fmt.Println(genre)
+	}
+
+	return genres, err
+}

@@ -3,15 +3,15 @@ module smh-api
 go 1.13
 
 require (
-	github.com/DataDog/zstd v1.4.4 // indirect
-	github.com/PuerkitoBio/goquery v1.5.0
+	github.com/DataDog/zstd v1.4.5 // indirect
+	github.com/PuerkitoBio/goquery v1.5.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/mojocn/base64Captcha v1.3.0
-	github.com/mozillazg/go-pinyin v0.16.0
+	github.com/mozillazg/go-pinyin v0.16.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rs/xid v1.2.1
 	github.com/satori/go.uuid v1.2.0

@@ -35,6 +35,7 @@ func Init(e *gin.Engine) {
 			movie.GET("/watching", controlers.Watchings)
 			movie.POST("/add", controlers.Add)
 			movie.POST("/addresources", controlers.AddResources)
+			movie.GET("/genre", controlers.MovieGenre)
 
 			movie.Use(jwt.JWTAuth())
 			movie.POST("/apply", controlers.Apply)

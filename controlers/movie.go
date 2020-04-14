@@ -170,3 +170,8 @@ func Applys(c *gin.Context) {
 	applys, err = models.FindMovieApply(bson.M{}, offset, limit, bson.M{"createAt": -1})
 	base.Response(c, err, applys)
 }
+
+func MovieGenre(c *gin.Context) {
+	data, err := models.FindMovieGenre()
+	base.Response(c, err, data)
+}
