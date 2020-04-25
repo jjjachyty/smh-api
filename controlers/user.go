@@ -27,6 +27,7 @@ func UserRegister(c *gin.Context) {
 	user.CreateAt = time.Now()
 	user.State = true
 	user.IP = c.ClientIP()
+	user.Avatar = "images/avatar/hanweizhelianmeng-yemoxia.png"
 	user.NickName = user.Phone[8:]
 	user.PassWord = base.GetMD5(user.PassWord)
 	user.VIPEndTime = time.Now().Add(time.Hour * 24)
@@ -102,6 +103,7 @@ func UserLoginWithSMS(c *gin.Context) {
 		user.CreateAt = time.Now()
 		user.State = true
 		user.IP = c.ClientIP()
+		user.Avatar = "images/avatar/hanweizhelianmeng-yemoxia.png"
 		user.NickName = user.Phone[8:]
 		user.PassWord = base.GetMD5("123456")
 		user.VIPEndTime = time.Now().Add(time.Hour * 24)
