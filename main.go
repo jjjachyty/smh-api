@@ -34,6 +34,5 @@ func main() {
 
 	// e.Binder = &models.ExposureArticle{}
 	// Start server
-
 	s.ListenAndServe()
 }

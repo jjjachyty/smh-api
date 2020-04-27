@@ -1,7 +1,10 @@
 package main
 
 import (
-	"smh-api/spider"
+	"fmt"
+	"strings"
+
+	"github.com/mozillazg/go-pinyin"
 )
 
 func main() {
@@ -26,5 +29,17 @@ func main() {
 	// fmt.Println(err)
 	// fmt.Println(json.Unmarshal(byts, &user1))
 
-	spider.Spider("http://www.diaosidao.net/play/21918-0-0.html")
+	// spider.Spider("http://www.diaosidao.net/play/21918-0-0.html")
+
+	hans := "武汉(1992)"
+
+	// 默认
+	a := pinyin.NewArgs()
+	pinys := pinyin.Pinyin(hans, a)
+	// [[zhong] [guo] [ren]]
+	for _, piny := range pinys {
+		fmt.Println(piny)
+		fmt.Println(strings.ToUpper((piny)[0][:1]))
+	}
+
 }

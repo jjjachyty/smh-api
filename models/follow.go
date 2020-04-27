@@ -14,7 +14,7 @@ import (
 
 type Follow struct {
 	ID           string `bson:"_id" binding:"-"` //
-	UserID       string
+	UserID       int64
 	FollowID     string
 	FollowName   string
 	FollowAvatar string
@@ -53,7 +53,7 @@ func (m *Follow) Delete() error {
 	return nil
 }
 
-func Follows(offset int64, limit int64, userid string) ([]*Follow, error) {
+func Follows(offset int64, limit int64, userid int64) ([]*Follow, error) {
 	var results []*Follow
 	var err error
 	var cursor *mongo.Cursor

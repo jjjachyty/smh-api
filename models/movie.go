@@ -24,7 +24,7 @@ type Movie struct {
 	Actor     string    `bson:"actor"`
 	DetailURL string    `bson:"detailURL"`
 	CreateAt  time.Time `bson:"createAt"`
-	CreateBy  string    `bson:"createBy"`
+	CreateBy  int64     `bson:"createBy"`
 	UpdateAt  time.Time `bson:"updateAt"`
 }
 

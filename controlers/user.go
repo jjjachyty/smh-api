@@ -9,8 +9,6 @@ import (
 	"smh-api/service"
 	"time"
 
-	"github.com/rs/xid"
-
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -23,7 +21,12 @@ func UserRegister(c *gin.Context) {
 		base.Response(c, errors.New("参数错误"), err.Error())
 		return
 	}
-	user.ID = xid.New().String()
+	var id int64
+	if id, err = models.GetNextSeqID(); err != nil {
+		base.Response(c, errors.New("获取ID出错"), err.Error())
+		return
+	}
+	user.ID = id
 	user.CreateAt = time.Now()
 	user.State = true
 	user.IP = c.ClientIP()
@@ -42,7 +45,7 @@ func UserCheckPhone(c *gin.Context) {
 	if has {
 		user := models.User{Phone: phone}
 		if err = user.Get(bson.M{"phone": user.Phone}); err == nil {
-			if user.ID != "" {
+			if user.ID > 0 {
 				err = errors.New("用户已存在,请直接登录")
 			}
 		}
@@ -57,7 +60,7 @@ func UserLoginWithPW(c *gin.Context) {
 	var user = new(models.User)
 	if err = c.BindJSON(user); err == nil {
 		err = user.Get(bson.M{"phone": user.Phone, "password": base.GetMD5(user.PassWord)})
-		if user.ID != "" {
+		if user.ID > 0 {
 			token, err = jwt.GenerateToken(*user)
 		} else {
 			err = errors.New("用户名或密码错误")
@@ -76,6 +79,19 @@ func UserVIP(c *gin.Context) {
 	var expTime = time.Now().Add(time.Hour * 24)
 	err = user.Update(bson.M{"$set": bson.M{"vipendtime": expTime}})
 	base.Response(c, err, expTime)
+}
+
+//UserCheckVIP 检查是否是VIP
+func UserCheckVIP(c *gin.Context) {
+	var err error
+	var user = new(models.User)
+	cla := jwt.GetClaims(c)
+	if err = user.Get(bson.M{"_id": cla.UserID}); err != nil || user.VIPEndTime.Before(time.Now()) {
+		base.Response(c, err, false)
+		return
+	}
+
+	base.Response(c, err, true)
 }
 
 //LoginWithSMS 短信验证码登录
@@ -98,8 +114,13 @@ func UserLoginWithSMS(c *gin.Context) {
 		base.Response(c, err, nil)
 		return
 	}
-	if user.ID == "" { //新用户自动注册
-		user.ID = xid.New().String()
+	if user.ID == 0 { //新用户自动注册
+		var id int64
+		if id, err = models.GetNextSeqID(); err != nil {
+			base.Response(c, errors.New("获取ID出错"), err.Error())
+			return
+		}
+		user.ID = id
 		user.CreateAt = time.Now()
 		user.State = true
 		user.IP = c.ClientIP()
@@ -137,5 +158,5 @@ func UserInfoByID(c *gin.Context) {
 	if userID != "" {
 		err = user.Get(bson.M{"_id": userID})
 	}
-	base.Response(c, err, models.User{ID: userID, NickName: user.NickName, Avatar: user.Avatar})
+	base.Response(c, err, models.User{ID: user.ID, NickName: user.NickName, Avatar: user.Avatar})
 }
