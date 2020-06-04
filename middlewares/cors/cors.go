@@ -15,6 +15,7 @@ func CorsSeting() gin.HandlerFunc {
 		c.Writer.Header().Set("expries", "-1")
 		c.Writer.Header().Set("Cache-Control", "no-cache")
 		c.Writer.Header().Set("Pragma", "no-cache")
+
 		if "OPTIONS" == c.Request.Method {
 			c.AbortWithStatus(200)
 		} else {

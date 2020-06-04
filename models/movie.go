@@ -25,6 +25,7 @@ type Movie struct {
 	DetailURL string    `bson:"detailURL"`
 	CreateAt  time.Time `bson:"createAt"`
 	CreateBy  int64     `bson:"createBy"`
+	Type      int       `bson:"type"`
 	UpdateAt  time.Time `bson:"updateAt"`
 }
 
@@ -75,6 +76,8 @@ func FindMovie(where bson.M, offset int64, limit int64, sort bson.M) ([]*Movie, 
 	for cursor.Next(context.TODO()) {
 		var elem = new(Movie)
 		if err = cursor.Decode(&elem); err != nil {
+			fmt.Println("cursor", err)
+
 			return nil, err
 		}
 		results = append(results, elem)

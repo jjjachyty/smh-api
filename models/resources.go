@@ -18,7 +18,7 @@ type Resources struct {
 	MovieID  string
 	URL      string
 	CreateBy int64
-	ReportBy string
+	ReportBy int64
 	CreateAt time.Time
 	UpdateAt time.Time
 	State    bool

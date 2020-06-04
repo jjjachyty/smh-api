@@ -19,8 +19,8 @@ import (
 func Newest(c *gin.Context) {
 	var err error
 	var result []*models.Movie
-	fmt.Println("Header", c.Request.Header)
-	result, err = models.FindMovie(bson.M{}, 0, 5, bson.M{"createAt": -1})
+	result, err = models.FindMovie(bson.M{"type": c.GetInt("type")}, 0, 5, bson.M{"createAt": -1})
+	fmt.Println("result", result)
 	base.Response(c, err, result)
 }
 func Add(c *gin.Context) {
@@ -34,6 +34,7 @@ func Add(c *gin.Context) {
 		}
 
 		result.ID = xid.New().String()
+		result.Type = 1
 		result.CreateAt = time.Now()
 		result.UpdateAt = result.CreateAt
 		if err = result.Insert(); err != nil {
@@ -72,7 +73,7 @@ func All(c *gin.Context) {
 
 	var err error
 	var result []*models.Movie
-	result, err = models.FindMovie(bson.M{}, offset*12, 12, bson.M{"createAt": -1})
+	result, err = models.FindMovie(bson.M{"type": c.GetInt("type")}, offset*12, 12, bson.M{"createAt": -1})
 	base.Response(c, err, result)
 
 }
@@ -104,16 +105,16 @@ func MovieDelete(c *gin.Context) {
 func Recommend(c *gin.Context) {
 	var err error
 	var result []*models.Movie
-	result, err = models.FindMovie(bson.M{}, 0, 5, bson.M{"createAt": -1})
+	result, err = models.FindMovie(bson.M{"type": c.GetInt("type")}, 0, 5, bson.M{"createAt": -1})
 	base.Response(c, err, result)
 }
 
 func Serach(c *gin.Context) {
 	var err error
-	var result []*models.Movie
+	var result = make([]*models.Movie, 0, 10)
 	key, has := c.GetQuery("key")
 	if has {
-		where := bson.M{"$or": []bson.M{bson.M{"name": bson.M{"$regex": key, "$options": "$i"}}, bson.M{"actor": bson.M{"$regex": key, "$options": "$i"}}}}
+		where := bson.M{"$or": []bson.M{bson.M{"type": c.GetInt("type"), "name": bson.M{"$regex": key, "$options": "$i"}}, bson.M{"actor": bson.M{"$regex": key, "$options": "$i"}}}}
 		result, err = models.FindMovie(where, 0, 10, bson.M{"createAt": -1})
 	}
 	base.Response(c, err, result)
