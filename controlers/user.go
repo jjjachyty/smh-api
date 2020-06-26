@@ -7,6 +7,7 @@ import (
 	"smh-api/middlewares/jwt"
 	"smh-api/models"
 	"smh-api/service"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -156,7 +157,8 @@ func UserInfoByID(c *gin.Context) {
 	var userID = c.Param("id")
 	var user = &models.User{}
 	if userID != "" {
-		err = user.Get(bson.M{"_id": userID})
+		userI, _ := strconv.ParseInt(userID, 0, 32)
+		err = user.Get(bson.M{"_id": userI})
 	}
 	base.Response(c, err, models.User{ID: user.ID, NickName: user.NickName, Avatar: user.Avatar})
 }

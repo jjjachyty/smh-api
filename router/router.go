@@ -58,7 +58,7 @@ func Init(e *gin.Engine) {
 			user.POST("/login", controlers.UserLoginWithPW)
 			user.POST("/loginsms", controlers.UserLoginWithSMS)
 			user.Use(jwt.JWTAuth())
-			// user.POST("/vip", controlers.UserVIP)
+			user.POST("/vip", controlers.UserVIP)
 			user.POST("/updateinfo", controlers.UserUpdateInfo)
 			user.GET("/moviecreate", controlers.MyCreateMovies)
 			user.GET("/moviecomments", controlers.UserComments)

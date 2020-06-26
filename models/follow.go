@@ -15,7 +15,7 @@ import (
 type Follow struct {
 	ID           string `bson:"_id" binding:"-"` //
 	UserID       int64
-	FollowID     string
+	FollowID     int64
 	FollowName   string
 	FollowAvatar string
 	CreateAt     time.Time
@@ -80,7 +80,7 @@ func Follows(offset int64, limit int64, userid int64) ([]*Follow, error) {
 		}
 		as := elem["user"].(primitive.A)
 		user := as[0].(map[string]interface{})
-		results = append(results, &Follow{FollowID: elem["followid"].(string), FollowName: user["nickname"].(string), FollowAvatar: user["avatar"].(string), CreateAt: elem["createat"].(primitive.DateTime).Time()})
+		results = append(results, &Follow{FollowID: elem["followid"].(int64), FollowName: user["nickname"].(string), FollowAvatar: user["avatar"].(string), CreateAt: elem["createat"].(primitive.DateTime).Time()})
 	}
 	return results, err
 }

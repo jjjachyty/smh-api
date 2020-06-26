@@ -124,11 +124,15 @@ func MyCreateMovies(c *gin.Context) {
 	var err error
 	var result []*models.Movie
 	offsetQuery, hasOffset := c.GetQuery("offset")
-	userID, hasUserId := c.GetQuery("userid")
+	var param = &models.Movie{}
 
-	if hasOffset && hasUserId {
+	if err = c.BindQuery(param); err != nil {
+		base.Response(c, err, result)
+		return
+	}
+	if hasOffset && param.CreateBy > 0 {
 		offset, _ := strconv.ParseInt(offsetQuery, 10, 64)
-		where := bson.M{"createBy": userID}
+		where := bson.M{"createBy": param.CreateBy}
 		result, err = models.FindMovie(where, offset, 10, bson.M{"createAt": -1})
 
 	}
