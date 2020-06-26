@@ -15,7 +15,7 @@ func CheckUser() gin.HandlerFunc {
 
 			c.Set("type", 0)
 
-			if token := c.Request.Header.Get("authorization"); token != "" {
+			if token := c.Request.Header.Get("authorization"); token != "" && token != "null" {
 				j := jwt.NewJWT()
 				fmt.Println("authorization=", token)
 				// parseToken 解析token包含的信息
