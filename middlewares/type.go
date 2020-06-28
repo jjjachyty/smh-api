@@ -34,6 +34,8 @@ func CheckUser() gin.HandlerFunc {
 					return
 				}
 			}
+		} else if "android" == c.Request.Header.Get("platform") {
+			c.Set("type", 1)
 		}
 	}
 }
