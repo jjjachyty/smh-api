@@ -14,6 +14,7 @@ import (
 
 type Resources struct {
 	ID       string `bson:"_id"`
+	Platform string
 	Name     string
 	MovieID  string
 	URL      string
