@@ -2,6 +2,7 @@ package router
 
 import (
 	"smh-api/controlers"
+	"smh-api/middlewares"
 	"smh-api/middlewares/jwt"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,7 @@ import (
 
 func Init(e *gin.Engine) {
 	v1 := e.Group("/api/v1")
+	v1.Use(middlewares.CheckUser())
 	{
 		base := v1.Group("/base")
 		{
@@ -22,7 +24,7 @@ func Init(e *gin.Engine) {
 
 		v1.GET("/player", controlers.PlayerController{}.Get)
 
-		movie := v1.Group("/movie")
+		movie := v1.Group("/video")
 		{
 			movie.GET("/newest", controlers.Newest)
 			movie.GET("/get", controlers.GetMovie)
@@ -65,6 +67,7 @@ func Init(e *gin.Engine) {
 
 			user.POST("/followadd", controlers.FollowAdd)
 			user.POST("/followremove", controlers.FollowRemove)
+			user.GET("/checkvip", controlers.UserCheckVIP)
 
 		}
 		comment := v1.Group("/comment")

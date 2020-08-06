@@ -49,6 +49,7 @@ func JWTAuth() gin.HandlerFunc {
 		}
 		// 继续交由下一个路由处理,并将解析出的信息传递下去
 		c.Set("claims", claims)
+
 	}
 }
 
@@ -68,7 +69,7 @@ var (
 
 // 载荷，可以加一些自己需要的信息
 type CustomClaims struct {
-	UserID   string
+	UserID   int64
 	Phone    string
 	NickName string
 	jwt.StandardClaims
@@ -178,8 +179,8 @@ func GetDataByTime(c *gin.Context) {
 func RefreshToken(c *gin.Context) {
 	var err = errors.New("authorization 不能为空")
 	token := c.Request.Header.Get("authorization")
-	fmt.Println(NewJWT().ParseToken(token))
-	if token != "" {
+	fmt.Println(token)
+	if token != "" && token != "null" {
 		token, err = NewJWT().RefreshToken(token)
 		fmt.Println("newtoken=", token, err)
 	}

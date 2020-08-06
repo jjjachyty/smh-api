@@ -15,7 +15,7 @@ type Article struct {
 	Title    string
 	Context  string
 	CreateAt time.Time
-	CreateBy string
+	CreateBy int64
 }
 
 func article() *mongo.Collection {

@@ -18,12 +18,12 @@ type Watching struct {
 }
 
 type WatchingHistory struct {
-	UserID         string
-	MovieID        string
-	MovieName      string
+	UserID         int64
+	VideoID        string
+	VideoName      string
 	ResourcesID    string
 	ResourcesName  string
-	MovieThumbnail string
+	VideoThumbnail string
 	MovieDuration  float64
 	Progress       float64
 	Finish         bool
@@ -36,6 +36,7 @@ func watchingHistoryCollection() *mongo.Collection {
 }
 
 func (m *WatchingHistory) Insert() error {
+	fmt.Println(m.VideoThumbnail)
 	if _, err := watchingHistoryCollection().InsertOne(context.TODO(), m); err != nil {
 		return err
 	}
@@ -48,7 +49,7 @@ func (m *WatchingHistory) Remove(where bson.M) (err error) {
 }
 
 func (m *WatchingHistory) Update() error {
-	if _, err := watchingHistoryCollection().UpdateOne(context.TODO(), bson.M{"userid": m.UserID, "movieid": m.MovieID, "resourcesid": m.ResourcesID}, bson.M{"$set": bson.M{"movieduration": m.MovieDuration, "progress": m.Progress, "updateat": time.Now()}}); err != nil {
+	if _, err := watchingHistoryCollection().UpdateOne(context.TODO(), bson.M{"userid": m.UserID, "movieid": m.VideoID, "resourcesid": m.ResourcesID}, bson.M{"$set": bson.M{"movieduration": m.MovieDuration, "progress": m.Progress, "updateat": time.Now()}}); err != nil {
 		return err
 	}
 	return nil

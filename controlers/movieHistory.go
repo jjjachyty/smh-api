@@ -2,6 +2,7 @@ package controlers
 
 import (
 	"errors"
+	"fmt"
 	"smh-api/base"
 	"smh-api/models"
 	"strconv"
@@ -36,7 +37,7 @@ func UpdateWatchingHistory(c *gin.Context) {
 
 	err = history.Update()
 	if err == nil {
-		watching := models.WatchingHistory{MovieID: history.MovieID, MovieThumbnail: history.MovieThumbnail, UserID: history.UserID}
+		watching := models.WatchingHistory{VideoID: history.VideoID, VideoThumbnail: history.VideoThumbnail, UserID: history.UserID}
 		err = watching.Update()
 	}
 	base.Response(c, err, nil)
@@ -50,19 +51,23 @@ func WatchingHistory(c *gin.Context) {
 		base.Response(c, errors.New("参数错误"), nil)
 		return
 	}
-	err = history.Get(bson.M{"userid": history.UserID, "movieid": history.MovieID, "resourcesid": history.ResourcesID})
+	err = history.Get(bson.M{"userid": history.UserID, "videoid": history.VideoID, "resourcesid": history.ResourcesID})
 	base.Response(c, err, history)
 }
 
 func WatchingHistorys(c *gin.Context) {
 	var err error
 	var historys []*models.WatchingHistory
+	var params = &models.WatchingHistory{}
 
 	offsetQuery, _ := c.GetQuery("offset")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 64)
-	userid, _ := c.GetQuery("userid")
-
-	historys, err = models.FindWatchHistorys(bson.M{"userid": userid}, offset, 15, bson.M{"createat": -1})
+	if err = c.BindQuery(params); err != nil {
+		base.Response(c, err, historys)
+		return
+	}
+	fmt.Println(params.UserID)
+	historys, err = models.FindWatchHistorys(bson.M{"userid": params.UserID}, offset, 15, bson.M{"createat": -1})
 	base.Response(c, err, historys)
 }
 

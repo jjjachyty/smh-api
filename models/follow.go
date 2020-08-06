@@ -14,8 +14,8 @@ import (
 
 type Follow struct {
 	ID           string `bson:"_id" binding:"-"` //
-	UserID       string
-	FollowID     string
+	UserID       int64
+	FollowID     int64
 	FollowName   string
 	FollowAvatar string
 	CreateAt     time.Time
@@ -53,7 +53,7 @@ func (m *Follow) Delete() error {
 	return nil
 }
 
-func Follows(offset int64, limit int64, userid string) ([]*Follow, error) {
+func Follows(offset int64, limit int64, userid int64) ([]*Follow, error) {
 	var results []*Follow
 	var err error
 	var cursor *mongo.Cursor
@@ -80,7 +80,7 @@ func Follows(offset int64, limit int64, userid string) ([]*Follow, error) {
 		}
 		as := elem["user"].(primitive.A)
 		user := as[0].(map[string]interface{})
-		results = append(results, &Follow{FollowID: elem["followid"].(string), FollowName: user["nickname"].(string), FollowAvatar: user["avatar"].(string), CreateAt: elem["createat"].(primitive.DateTime).Time()})
+		results = append(results, &Follow{FollowID: elem["followid"].(int64), FollowName: user["nickname"].(string), FollowAvatar: user["avatar"].(string), CreateAt: elem["createat"].(primitive.DateTime).Time()})
 	}
 	return results, err
 }

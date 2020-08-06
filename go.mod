@@ -11,7 +11,7 @@ require (
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/mojocn/base64Captcha v1.3.0
-	github.com/mozillazg/go-pinyin v0.16.0 // indirect
+	github.com/mozillazg/go-pinyin v0.16.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rs/xid v1.2.1
 	github.com/satori/go.uuid v1.2.0

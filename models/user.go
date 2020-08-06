@@ -11,7 +11,7 @@ import (
 )
 
 type User struct {
-	ID             string `bson:"_id" binding:"-"` //
+	ID             int64 `bson:"_id" binding:"-"` //
 	Mail           string
 	NickName       string
 	Avatar         string
